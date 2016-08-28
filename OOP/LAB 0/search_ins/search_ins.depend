@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1470635785 source:c:\users\student\documents\oop lab\search_ins\main.cpp
+	<iostream>
+	<stdio.h>
+
