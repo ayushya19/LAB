@@ -1,0 +1,16 @@
+import java.util.Scanner;
+
+class Diagonal_Sum
+{
+	static Scanner sc=new Scanner(System.in);
+	public static void main(String[] argc)
+	{
+		int n;
+		System.out.print("Enter the Number of Elements : ");
+		n=sc.nextInt();
+		int[n][n] arr;
+		System.out.println("Enter the Elements");
+
+		for(int i=0; i<n; i++)
+			for(int j=0; j<n; j++)
+				arr[i]=cs.nextI
