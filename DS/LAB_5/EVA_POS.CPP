@@ -1,52 +1,103 @@
 #include <iostream.h>
-#include <stdio.h>
-#include <string.h>
-#include <conio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <ctype.h>
+#define MAX 50
 
-class Stack
+class postfix
 {
-	char stack[100];
-	int top;
-
-	public:
-
-	Stack()
-	{	top=-1;	}
-
-	void push(char ch)
-	{
-		if(top==100)	cout<<"\nStack full.";
-		else		stack[++top]=ch;
-	}
-
-	char pop()
-	{
-		if(top==-1)	cout<<"\nStack Empty.";
-		else 		return stack[top--];
-	}
+	int stack[MAX] ;
+	int top, nn ;
+	char *s ;
 	
-	int postfixEval(char *pf, int *data)
+	public :
+		
+	postfix( )
 	{
-		int i=0, op1, op2, res=0;
-		char ch;
-		while(pf[i]!='\0')
+		top = -1 ;
+	}
+	void setexpr ( char *str )
+	{
+		s = str ;
+	}
+	void push ( int item )
+	{
+		if ( top == MAX - 1 )
+			cout << endl << "Stack is full" ;
+		else
 		{
-			ch=pf[i];
-			if(isalpha(pf[i]))	push(data[i]);
-			
+			top++ ;
+			stack[top] = item ;
 		}
 	}
+	int pop( )
+	{
+		if ( top == -1 )
+		{
+			cout << endl << "Stack is empty" ;
+			return NULL ;
+		}
+		int data = stack[top] ;
+		top-- ;
+		return data ;
+	}
+	void calculate( )
+	{
+		int n1, n2, n3 ;
+		while ( *s )
+		{
+			if ( *s == ' ' || *s == '\t' )
+			{
+				s++ ;
+				continue ;
+			}
+			if ( isdigit ( *s ) )
+			{
+				nn = *s - '0' ;
+				push ( nn ) ;
+			}
+			else
+			{
+				n1 = pop( ) ;
+				n2 = pop( ) ;
+				switch ( *s )
+				{
+					case '+' :
+						n3 = n2 + n1 ;
+						break ;
+					case '-' :
+						n3 = n2 - n1 ;
+						break ;
+					case '/' :
+						n3 = n2 / n1 ;
+						break ;
+					case '*' :
+						n3 = n2 * n1 ;
+						break ;
+					case '%' :
+						n3 = n2 % n1 ;
+						break ;
+				}
+	 
+				push ( n3 ) ;
+			}
+			s++ ;
+		}
+	}
+	void show( )
+	{
+		nn = pop ( ) ;
+		cout << "Result is: " << nn ;
+	}
 };
-
-void main()
+ 
+void main( )
 {
-	clrscr();
-	char postfix[100];int arr[5];
-	cout<<"\nEnter the Postfix Expression : ";gets(postfix);
-	cout<<"\nEnter value of a, b, c, d, e : \n";
-	for(int i=0; i<5; i++)
-		cin>>arr[i];
-	Stack s;
-	s.postfixEval()
-	getch();
+	char expr[MAX] ;
+	cout << "\nEnter postfix expression to be evaluated : " ;
+	gets(expr) ;
+	postfix q ;
+	q.setexpr ( expr ) ;
+	q.calculate( ) ;
+	q.show( ) ;
 }
