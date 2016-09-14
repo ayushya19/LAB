@@ -11,24 +11,28 @@ class Diagonal_Sum
 		int[][] arr=new int[n][n];
 		System.out.println("Enter the Elements");
 
-		boolean check=true;
 		for(int i=0; i<n; i++)
 			for(int j=0; j<n; j++)
 				arr[i][j]=sc.nextInt();
-
+		
+		int s=0;
 		for(int i=0; i<n; i++)
 		{
 			for(int j=0; j<i; j++)
 				System.out.print("\t");
 			System.out.print(arr[i][i]+"\n");
+			s+=arr[i][i];
 		}
+		System.out.println("Sum of Principal Diagonal is : "+s);
 		
-		System.out.print("\n");
+		System.out.print("\n");s=0;
 		for(int i=0; i<n; i++)
                 {
                         for(int j=n-1; j>i; j--)
                                 System.out.print("\t");
                         System.out.print(arr[n-i-1][i]+"\n");
+			s+=arr[n-i-1][i];
 		}
+		System.out.println("Sum of Principal Diagonal is : "+s);
 	}
 }

@@ -1,15 +1,17 @@
-# include <iostream.h>
+# include <iostream>
 # include <string.h>
-# include <stdlib.h>
-# include <conio.h>
+# include <stdio.h>
+# define SIZE 100
 
-class Stack
+using namespace std;
+
+class STACK
 {
 	int top;
 	char Stack[25][SIZE];
 
 	public:
-	Stack()
+	STACK()
 	{
 		top=-1;
 	}
@@ -28,7 +30,7 @@ class Stack
 
 	char* pop( )
 	{
-		char sym[SIZE]={NULL};
+		char sym[SIZE];
 
 		if(top==-1)
 			cout<<"\nStack is empty.";
@@ -36,30 +38,41 @@ class Stack
 		else
 		{
 			strcpy(sym,Stack[top]);
-			strset(Stack[top],NULL);
 			top--;
 		}
 
 		return sym;
 	}
 
-	void postfix_to_infix(char *postfix)
+	void reverse(char *str)
 	{
-		char infix[SIZE]={NULL};
-		char val1[SIZE]={NULL}, val2[SIZE]={NULL}, res[SIZE]={NULL};
-		char sym[5]={NULL};
+		int l=strlen(str);
+	    for(int i=0; i<l/2; i++)
+	    {
+	    	char ch=str[i];
+	    	str[i]=str[l-i-1];
+	    	str[l-i-1]=ch;
+	    }
+	}
 
-		strcat(postfix,"=");
+	void prefix_to_infix(char *prefix)
+	{
+		char infix[SIZE];
+		char val1[SIZE], val2[SIZE], res[SIZE];
+		char sym[5];
+
+		reverse(prefix);
+		strcat(prefix,"=");
 
 		int count=0;
 		do
 		{
-			sym[0]=postfix[count];
+			sym[0]=prefix[count];
 
 			if(	sym[0]=='/' || sym[0]=='*' || sym[0]=='%' || sym[0]=='-' || sym[0]=='+' )
 			{
-				strcpy(val1, pop());
 				strcpy(val2, pop());
+				strcpy(val1, pop());
 
 				if(infix[(count+1)]!='=')
 					strcpy(res,"(");
@@ -79,23 +92,21 @@ class Stack
 
 			count++;
 		}
-		while(postfix[count]!='=');
+		while(prefix[count]!='=');
 
-		strset(infix,NULL);
 		strcpy(infix,pop( ));
 
-		cout<<"\n\n\t Infix Expression is : "<<infix;
+		cout<<"\n Infix Expression is : "<<infix<<'\n';
 	}
 };
-void main( )
+
+int main( )
 {
-	clrscr( );
-	Stack s;
+	STACK s;
+	char prefix[SIZE];
 
-	char postfix[SIZE];
+	cout<<"\n Enter the Prefix Expression : ";gets(prefix);
+	s.prefix_to_infix(prefix);
 
-	cout<<"\n\n\t Enter the Postfix Expression : ";	gets(postfix);
-	s.postfix_to_infix(postfix);
-
-	getch( );
+	return 0;
 }

@@ -3,8 +3,9 @@ import java.util.Scanner;
 class Magic_Square
 {
 	static Scanner sc=new Scanner(System.in);
+	static int s;
 
-	static int rowSum(int arr[][], int row, int s)
+	static int rowSum(int arr[][], int row)
 	{
 		int sum=0;
 		for(int j=0; j<s; j++)
@@ -13,7 +14,7 @@ class Magic_Square
 		return sum;
 	}
 
-	static int colSum(int arr[][], int s, int col)
+	static int colSum(int arr[][], int col)
 	{
 		int sum=0;
 		for(int j=0; j<s; j++)
@@ -22,7 +23,7 @@ class Magic_Square
 		return sum;
 	}
 
-	static int leftDiagSum(int arr[][], int s)
+	static int leftDiagSum(int arr[][])
 	{
 		int sum=0;
 		for(int j=0; j<s; j++)
@@ -31,7 +32,7 @@ class Magic_Square
 		return sum;
 	}
 
-	static int rightDiagSum(int arr[][], int s)
+	static int rightDiagSum(int arr[][])
 	{
 		int sum=0;
 		for(int j=0; j<s; j++)
@@ -41,10 +42,9 @@ class Magic_Square
 	}
 
 	public static void main(String[] argc)
-	{
-		
+	{		
 		System.out.print("\nEnter Size : ");
-		int s=sc.nextInt();
+		s=sc.nextInt();
 		
 		int[][] a=new int[s][s];
 		System.out.print("\nEnter Matrix :\n");
@@ -55,20 +55,17 @@ class Magic_Square
 		int frs=0, fcs=0, lds, rds;
 		int[] r=new int[s];
 		int[] c=new int[s];
-
 		for(int i=0; i<s; i++)
-			r[i]=rowSum(a, i, s);
-
-		for(int i=0; i<s; i++)
-			c[i]=colSum(a, s, i);
-
-		lds=leftDiagSum(a, s);
-		rds=rightDiagSum(a, s);
-
+		{
+			r[i]=rowSum(a, i);
+			c[i]=colSum(a, i);
+		}
+		
+		lds=leftDiagSum(a);
+		rds=rightDiagSum(a);
 		for(int i=0; i<s-1; i++)
 			if(r[i]!=r[i+1])
 				frs=1;
-
 		for(int i=0; i<s-1; i++)
 			if(c[i]!=c[i+1])
 				fcs=1;
@@ -77,6 +74,5 @@ class Magic_Square
 			System.out.print("\nIt is a Magic Square.");
 		else
 			System.out.print("\nIt is not a Magic Square.");
-
 	}
 }

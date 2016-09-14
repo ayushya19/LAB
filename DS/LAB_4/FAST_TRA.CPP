@@ -1,38 +1,61 @@
-#include <iostream.h>
-#include <conio.h>
+#include <iostream>
+#define maxRow 3
+#define maxCol 3
+
+using namespace std;
 
 class Matrix
 {
-	int r, c, value;
+	int row, col, value;
+	
 	public:
 	Matrix()
-	{  r=c=value=NULL;  }
+	{  
+		row=col=-1;
+		value=0;  
+	}
 
-	void input(int a, int b, int c)
-	{  r=a, c=b, value=c;  }
+	void input(Matrix *m)
+	{  
+		m[0].row=maxRow, m[0].col=maxCol;
+		m[0].value=0;
+		for(int i=0; i<m[0].row; i++)
+			for(int j=0; j<m[0].col; j++)
+			{
+				int k;
+				cin>>k;
+				if(k)
+				{
+					m[0].value++;
+					m[m[0].value].row=i;
+					m[m[0].value].col=j;
+					m[m[0].value].value=k;
+				}
+			}  
+	}
 
 	int giveValue(int a, int b)
 	{
-		if(r==a && c==b)       return value;
-		else 	return NULL;
+		if(row==a && col==b)       return value;
+		else 	return 0;
 	}
 
 	void transpose(Matrix *a, Matrix *b)
 	{
-		int rowTerms[maxCol]={0}, startingPos[maxCols];
-		int i, j, numCols=a[0].col;
 		int numTerms=a[0].value;
-		b[0].row=numCols;
+		int rowTerms[maxCol]={0}, startingPos[maxCol];
+		int i, j;
+		b[0].row=a[0].col;
 		b[0].col=a[0].row;
 		b[0].value=numTerms;
 
 		if(numTerms > 0)
 		{
-			for(i=1; i<numTerms; i++)
+			for(i=1; i<=numTerms; i++)
 				rowTerms[a[i].col]++;
 
 			startingPos[0]=1;
-			for(i=1; i<numTerms; i++)
+			for(i=1; i<maxCol; i++)
 				startingPos[i]=startingPos[i-1]+rowTerms[i-1];
 
 			for(i=1; i<=numTerms; i++)
@@ -44,30 +67,38 @@ class Matrix
 			}
 		}
 	}
+	
+	void display(Matrix *n)
+	{
+		int z=1;
+		for(int i=0; i<n[0].row; i++)
+		{
+			cout<<"\n";
+			for(int j=0; j<n[0].col; j++)
+			{
+				int tst=n[z].giveValue(i, j);
+				if(tst)
+				{
+					cout<<tst<<'\t';
+					z++;
+				}
+				else	cout<<"0\t";
+			}
+		}	
+	}
 };
 
-void main()
+int main()
 {
 	cout<<"\nEnter the Matrix :\n";
-	Matrix M[10];int z=1;
-	for(int i=0; i<MaxRow; i++)
-		for(int j=0; j<MaxCol; j++)
-		{
-			int k;
-			cin>>k;
-			if(k)
-			{
-				M[z++]=k;
-				m[0].input(MaxRow, MaxCol, z);
-			}
-		}
+	Matrix M[10];
+	
+	M[0].input(M);
+		
 	Matrix N[10];
-	M[0].transpose(M, N);
-	for(i=0; i<numCol; i++)
-	{
-		cout<<"\n";
-		for(int j=0; j<numRows; j++)
-		{
-			if(m[
-
+	
+	N[0].transpose(M, N);
+	N[0].display(N);
+	
+	return 0;
 }

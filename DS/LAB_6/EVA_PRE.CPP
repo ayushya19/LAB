@@ -1,12 +1,15 @@
-#include <iostream.h>
-#include <stdlib.h>
+#include <iostream>
+#include <stdio.h>
 #include <math.h>
 #include <ctype.h>
+#include <string.h>
 #define MAX 100
+
+using namespace std;
 
 class postfix
 {
-	int stack[MAX], value[26];
+	int stack[MAX], *value;
 	int top, res;
 	char *s;
 	
@@ -14,7 +17,7 @@ class postfix
 		
 	postfix()
 	{
-		top = -1;
+		top=res=-1;
 	}
 
 	void setexpr (char *str, int *v)
@@ -41,9 +44,21 @@ class postfix
 		return stack[top--];
 	}
 
+	void reverse(char *str)
+	{
+		int l=strlen(str);
+	    for(int i=0; i<l/2; i++)
+	    {
+	    	char ch=str[i];
+	    	str[i]=str[l-i-1];
+	    	str[l-i-1]=ch;
+	    }
+	}
+
 	void calculate()
 	{
 		int n1, n2, n3;
+		reverse(s);
 		while (*s)
 		{
 			if (*s == ' '  ||  *s == '\t')
@@ -52,12 +67,12 @@ class postfix
 				continue;
 			}
 			if (isalpha(*s))
-				push(value[*s - 97];
+				push(value[*s - 97]);
 				
 			else
 			{
-				n1 = pop();
 				n2 = pop();
+				n1 = pop();
 				switch (*s)
 				{
 					case '+' :	n3 = n2 + n1;
@@ -84,19 +99,24 @@ class postfix
 	}
 };
  
-void main()
+int main()
 {
 	char expr[MAX];
 	int val[26]={NULL};
-	cout << "\nEnter postfix expression to be evaluated : ";
+	cout << "\nEnter prefix expression to be evaluated : ";
 	gets(expr);
-	for(int i=0; i<=strlen(str); i++)
+	for(int i=0; i<strlen(expr); i++)
 	{
-		if(val[str[i]-97]!=NULL)
-			cout<<"Enter value of str[i] : ";cin>>val[str[i]-97];
+		if(isalpha(expr[i]))
+			if (val[expr[i]-97]==NULL)
+			{
+				cout<<"Enter value of "<<expr[i]<<" : ";
+				cin>>val[expr[i]-97];
+			}
 	}
 	postfix q;
 	q.setexpr (expr, val);
 	q.calculate();
 	q.show();
+	return 0;
 }

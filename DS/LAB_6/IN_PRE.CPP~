@@ -1,8 +1,9 @@
-#include <iostream.h>
+#include <iostream>
 #include <stdio.h>
 #include <string.h>
-#include <conio.h>
 #define MAX 100
+
+using namespace std;
 
 class Stack
 {
@@ -32,10 +33,21 @@ class Stack
 		else if(ch=='+' || ch=='-')	return 4;
 		else	return 3;
 	}
-	
-	void inToPost(char *infix, char *postfix)
+
+	void reverse(char *str)
+	{
+		int l=strlen(str);
+	    for(int i=0; i<l/2; i++)
+	    {
+	    	char ch=str[i];
+	    	str[i]=str[l-i-1];
+	    	str[l-i-1]=ch;
+	    }
+	}
+	void inToPre(char *infix, char *prefix)
 	{
 		int length=strlen(infix), index=0, pos=0;
+		reverse(infix);
 		char symbol, temp;
 		push('#');
 		while(index<length)
@@ -43,45 +55,44 @@ class Stack
 			symbol=infix[index];
 			switch(symbol)
 			{
-				case '(':	push(symbol); break;
-				case ')':	temp=pop();
-							while(temp!='(')
+				case ')':	push(symbol); break;
+				case '(':	temp=pop();
+							while(temp!=')')
 							{
-								postfix[pos++]=temp;
+								prefix[pos++]=temp;
 								temp=pop();
 							}break;
 
 				case '+':
 				case '-':
 				case '*':
-				case '/' :
+				case '/':
 				case '%':	while(preced(stack[top])>preced(symbol))
 							{
 								temp=pop();
-								postfix[pos++]=temp;
+								prefix[pos++]=temp;
 							}
 							push(symbol);	break;
 
-				default	:	postfix[pos++]=symbol;
+				default	:	prefix[pos++]=symbol;
 			}
 			index++;
 		}
 		while(top>0)
 		{
 			temp=pop();
-			postfix[pos++]=temp;
+			prefix[pos++]=temp;
 		}
-		postfix[pos++]='\0';
+		prefix[pos++]='\0';
+		reverse(prefix);
 	}
 };
 
-void main()
+int main()
 {
-	clrscr();
-	char infix[MAX], postfix[MAX];
+	char infix[MAX], prefix[MAX];
 	cout<<"\nEnter the Infix Expression : ";gets(infix);
 	Stack s;
-	s.inToPost(infix, postfix);
-	cout<<"\nThe Postfix Expression is : "<<postfix;
-	getch();
+	s.inToPre(infix, prefix);
+	cout<<"\nThe Prefix Expression is : "<<prefix<<'\n';
 }

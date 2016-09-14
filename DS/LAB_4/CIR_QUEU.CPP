@@ -80,7 +80,6 @@ void main()
 		switch(opt)
 		{
 			case 1: clrscr();
-				int n;
 				C.ins();
 				break;
 			case 2:	clrscr();
