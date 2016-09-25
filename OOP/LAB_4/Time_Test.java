@@ -1,3 +1,5 @@
+package LAB_4;
+
 import java.util.Scanner;
 
 class Time 

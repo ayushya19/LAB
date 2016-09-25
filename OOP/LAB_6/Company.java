@@ -1,3 +1,5 @@
+package LAB_6;
+
 import java.util.Scanner;
 
 interface HCL{
