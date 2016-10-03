@@ -16,8 +16,7 @@ class Hardware implements HCL{
     }
     Hardware(int a){
         n=a;
-    }
-    
+    }    
 
     @Override
     public void input(){
