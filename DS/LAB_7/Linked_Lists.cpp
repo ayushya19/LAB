@@ -11,23 +11,23 @@ public:
     
     LinkedLists()
     {
-        *next=NULL;
+        next=NULL;
     }
     
-    LinkedLists* create();
+    static LinkedLists* create();
     void add(LinkedLists *head);
     void display(LinkedLists *head);
     
     void insertBefore(LinkedLists *head);
     void insertAfter(LinkedLists *head);
     void deleteAtIndex(LinkedLists *head);
-    void reverse(LinkedLists *head);
+    LinkedLists* reverse(LinkedLists *head);
     void sort(LinkedLists *head);
     void deleteAlternate(LinkedLists *head);
-    void insertSort(LinkedLists *head);
+    LinkedLists* insertSort(LinkedLists *head);
 };
 
-LinkedLists LinkedLists::create()
+LinkedLists* LinkedLists::create()
 {
     LinkedLists *head=new LinkedLists();
     std::cout<<"\nEnter the Value";std::cin>>head->value;
@@ -49,9 +49,7 @@ void LinkedLists::add(LinkedLists* head)
             node=node->next;
         }
         node->next=p;
-        delete node;
     }
-    delete p;
 }
 
 void LinkedLists::display(LinkedLists *head)
@@ -62,8 +60,7 @@ void LinkedLists::display(LinkedLists *head)
         return;
     }
     
-    LinkedLists *node=new LinkedLists();
-    node=head;
+    LinkedLists *node=head;
     std::cout<<'\n';
     while(node!=NULL)
     {
@@ -99,7 +96,7 @@ void LinkedLists::insertBefore(LinkedLists *head)
     }
     
     else
-    {   LinkedLists *node=new LinkedLists(), *node1=new LinkedLists();
+    {   LinkedLists *node=head, *node1=NULL;
         node=head;
         while(node!=NULL)
         {
@@ -133,8 +130,7 @@ void LinkedLists::insertAfter(LinkedLists *head)
     }
     
     else
-    {   LinkedLists *node=new LinkedLists();
-        node=head;
+    {   LinkedLists *node=head;
         while(node->next!=NULL)
         {
             if(node->value==v)
@@ -169,8 +165,7 @@ void LinkedLists::deleteAtIndex(LinkedLists* head)
     }
     
     else
-    {   LinkedLists *node=new LinkedLists(), *node1=new LinkedLists();
-        node=head;
+    {   LinkedLists *node=head, *node1=NULL;
         while(node!=NULL)
         {
             if(node->value==v)
@@ -190,12 +185,12 @@ void LinkedLists::deleteAtIndex(LinkedLists* head)
     }
 }
 
-void LinkedLists::reverse(LinkedLists* head)
+LinkedLists* LinkedLists::reverse(LinkedLists* head)
 {
     if(head==NULL)
     {
         std::cout<<"\nEmpty List.";
-        return;
+        return NULL;
     }
     
     LinkedLists *p1, *p2, *p3;
@@ -212,6 +207,7 @@ void LinkedLists::reverse(LinkedLists* head)
         p2->next=p1;
     }
     head=p2;
+    return head;
 }
 
 void LinkedLists::sort(LinkedLists* head)
@@ -222,9 +218,7 @@ void LinkedLists::sort(LinkedLists* head)
         return;
     }    
     
-    LinkedLists *temp, *p, *q;
-    temp=new LinkedLists();
-    p=head;
+    LinkedLists *temp=new LinkedLists, *p=head, *q;
     while(p->next!=NULL)
     {
         q=p->next;
@@ -244,8 +238,6 @@ void LinkedLists::sort(LinkedLists* head)
 
 void LinkedLists::deleteAlternate(LinkedLists* head)
 {
-    int v;
-    std::cout<<"\nWhere do you want to Delete : ";std::cin>>v;
     if(head==NULL)
     {
         std::cout<<"\nEmpty List.";
@@ -270,7 +262,7 @@ void LinkedLists::deleteAlternate(LinkedLists* head)
     }
 }
 
-void LinkedLists::insertSort(LinkedLists *head)
+LinkedLists* LinkedLists::insertSort(LinkedLists *head)
 {
     LinkedLists *n=new LinkedLists();
     std::cout<<"\nEnter the Element : ";std::cin>>n->value;
@@ -278,47 +270,44 @@ void LinkedLists::insertSort(LinkedLists *head)
     {
         std::cout<<"\nEmpty List. Inserting as first value.";
         head=n;
-        return;
+        return NULL;
     }
     
     else if(head->next==NULL)
     {
-        if(head->value <= n->value)
+        if(head->value >= n->value)
         {
             n->next=head;
             head=n;
         }
         else
-        {
             head->next=n;
-        }
     }
     
     else
-    {   int f=0;
-        LinkedLists *node=new LinkedLists(), *node1=new LinkedLists();
-        node=head;
-        while(node!=NULL)
-        {
-            if(node->value <= n->value)
-            {
-                f=1;
-                node1->next=n;
-                node1=node1->next;
-                node1->next=node;
-                break;
-            }
-            else
-            {
-                node1=node;
-                node=node->next;
-            }
-        }
-        if(f==0)
-        {
-            node1->next=n;
-        }
+    {   LinkedLists *node=head;
+
+    	if (head->value >= n->value)
+    	{
+    		n->next=head;
+    		head=n;
+    	}
+
+        else {
+        	while(node->next!=NULL)
+	        {
+	            if(node->next->value >= n->value)
+	            {
+	                n->next=node->next;
+	                node->next=n;
+	                break;
+	            }
+	            node=node->next;
+	        }
+	        node->next=n;        
+	   	}
     }
+    return head;
 }
 
 int main()
@@ -326,11 +315,12 @@ int main()
     int opt=0;
     while(opt!=11)
     {
-        LinkedLists *head=NULL;
+    	LinkedLists *head;
         std::cout<<"\n\n\n\tEnter your Choice\n"
                  <<"\n1. Create a Linked List."
                  <<"\n2. Add data in a Linked List."
                  <<"\n3. Insert Value Before an Element."
+                 <<"\n4. Insert Value After an Element."
                  <<"\n5. Delete a particular Element."
                  <<"\n6. Traverse a List."
                  <<"\n7. Reverse a List."
@@ -341,17 +331,34 @@ int main()
         std::cin>>opt;
         switch(opt)
         {
-            case 1 :  LinkedLists *n=new LinkedLists();
-                      head=n.create();
-                      delete n;
+            case 1 :  head=LinkedLists::create();
                       break;
-            case 2 :  head.add(head);
+
+            case 2 :  head->add(head);
                       break;
             
-            case 3 :  head.insertBefore(head);
+            case 3 :  head->insertBefore(head);
                       break;
                       
-            case 4 :  head.insertAfter(head);
+            case 4 :  head->insertAfter(head);
+                      break;
+
+            case 5 :  head->deleteAtIndex(head);
+                      break;
+
+            case 6 :  head->display(head);
+                      break;
+
+            case 7 :  head=head->reverse(head);
+                      break;
+
+            case 8 :  head->sort(head);
+                      break;
+
+            case 9 :  head->deleteAlternate(head);
+                      break;
+
+            case 10 : head=head->insertSort(head);
                       break;
         }
     }
