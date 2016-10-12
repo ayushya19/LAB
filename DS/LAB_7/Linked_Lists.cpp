@@ -18,7 +18,7 @@ public:
     void add(LinkedLists *head);
     void display(LinkedLists *head);
     
-    void insertBefore(LinkedLists *head);
+    LinkedLists* insertBefore(LinkedLists *head);
     void insertAfter(LinkedLists *head);
     void deleteAtIndex(LinkedLists *head);
     LinkedLists* reverse(LinkedLists *head);
@@ -69,7 +69,7 @@ void LinkedLists::display(LinkedLists *head)
     }
 }
 
-void LinkedLists::insertBefore(LinkedLists *head)
+LinkedLists* LinkedLists::insertBefore(LinkedLists *head)
 {
     LinkedLists *n=new LinkedLists();
     int v;
@@ -79,7 +79,7 @@ void LinkedLists::insertBefore(LinkedLists *head)
     {
         std::cout<<"\nEmpty List. Inserting as first value.";
         head=n;
-        return;
+        return head;
     }
     
     else if(head->next==NULL)
@@ -97,15 +97,21 @@ void LinkedLists::insertBefore(LinkedLists *head)
     
     else
     {   LinkedLists *node=head, *node1=NULL;
-        node=head;
         while(node!=NULL)
         {
             if(node->value==v)
             {
-                node1->next=n;
-                node1=node1->next;
-                node1->next=node;
-                break;
+                if(node==head){
+                    n->next=head;
+                    head=n; return head;
+                }
+                else{                        
+                    node1->next=n;
+                    n->next=node;
+                    node1=node1->next;
+                    node1->next=node;
+                    break;
+                }
             }
             else
             {
@@ -114,6 +120,7 @@ void LinkedLists::insertBefore(LinkedLists *head)
             }
         }
     }
+    return head;
 }
 
 void LinkedLists::insertAfter(LinkedLists *head)
@@ -337,7 +344,7 @@ int main()
             case 2 :  head->add(head);
                       break;
             
-            case 3 :  head->insertBefore(head);
+            case 3 :  head=head->insertBefore(head);
                       break;
                       
             case 4 :  head->insertAfter(head);

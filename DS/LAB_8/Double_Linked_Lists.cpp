@@ -118,9 +118,9 @@ void DLL::deleteElement(DLL *head){
 		while(node->rlink!=NULL){
 			if(node->value==v){
 				DLL *temp=node;
-				node=node->llink;
-				node->rlink=temp->rlink;
-				node->rlink->llink=node;
+				node=node->rlink;
+				node->llink=temp->llink;
+				if(temp==head)	head=node;
 				delete temp;
 				return;
 			}
