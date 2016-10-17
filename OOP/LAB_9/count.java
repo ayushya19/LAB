@@ -13,7 +13,7 @@ class count
 		{
 			if(s.charAt(i)=='a' || s.charAt(i)=='e' || s.charAt(i)=='i' || s.charAt(i)=='o' || s.charAt(i)=='u')
 				count_vowels++;
-			if(s.charAt(i)==' ')
+			if(s.charAt(i)==' ' && s.charat(i+1)!=' ')
 				count_words++;
 			if(s.charAt(i)=='.')
 				count_lines++;
